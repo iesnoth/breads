@@ -11,6 +11,10 @@ app.get(`/`, (req, res) => {
     res.send(`Welcome to an Awesome Application about bread!`)
 })
 
+//Breads
+const breadsController = require(`./controllers/breads_controller.js`)
+app.use(`/breads`, breadsController)
+
 //LISTEN
 app.listen(PORT, () => {
     console.log(`listing on port`, PORT);
