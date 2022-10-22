@@ -23,7 +23,7 @@ app.use(`/breads`, breadsController)
 
 //404 Page
 app.get(`*`, (req,res) => {
-    res.send(`404`)
+    res.status(404).render(`page404`)
 })
 
 //LISTEN
