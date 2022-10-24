@@ -5,6 +5,7 @@ const express = require('express')
 //CONFIGURATION
 const PORT = process.env.PORT
 const app = express()
+const methodOverride = require('method-override')
 
 //MIDDLEWARE
 app.set(`views`, __dirname + `/views`)
@@ -13,6 +14,8 @@ app.engine(`jsx`, require(`express-react-views`).createEngine())
 app.use(express.static('public'))
 //changes string into an object?
 app.use(express.urlencoded({extended: true}))
+//override
+app.use(methodOverride(`_method`))
 
 //ROUTES
 app.get(`/`, (req, res) => {
