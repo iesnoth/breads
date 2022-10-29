@@ -2,6 +2,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const {Schema} = mongoose
 
 //CONFIGURATION
 const PORT = process.env.PORT
