@@ -2,13 +2,9 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const {Schema} = mongoose
 
 //CONFIGURATION
 const PORT = process.env.PORT
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
-    () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
-  )  
 const app = express()
 const methodOverride = require('method-override')
 
@@ -36,6 +32,10 @@ app.get(`*`, (req,res) => {
     res.status(404).render(`page404`)
 })
 
+
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
+    () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
+  ) 
 //LISTEN
 app.listen(PORT, () => {
     console.log(`listing on port`, PORT);
