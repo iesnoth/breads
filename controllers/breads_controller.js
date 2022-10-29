@@ -45,16 +45,16 @@ breads.put(`/:arrayIndex`,(req,res) => {
 })
 
 //EDIT
-breads.get(`/:indexArray/edit`,(req,res) => {
+breads.get(`/:id/edit`,(req,res) => {
     res.render(`edit`,{
-        bread: Bread[req.params.indexArray],
-        index: req.params.indexArray
+        bread: Bread[req.params.id],
+        index: req.params.id
     })
 })
 
 //SHOW
-breads.get(`/:arrayIndex`, (req, res) => {
-    Bread.findById(req.params.arrayIndex)
+breads.get(`/:id`, (req, res) => {
+    Bread.findById(req.params.id)
     .then(foundBread => {
         res.render('show', {
             bread: foundBread
