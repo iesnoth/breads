@@ -31,7 +31,12 @@ breads.post(`/`, (req, res) => {
         req.body.hasGluten = 'false'
     }
     Bread.create(req.body)
-    res.redirect('/breads')
+        .then(createdBread => { res.redirect('/breads') })
+        .catch(err => {
+            res.status(303).send(
+                `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
+            )
+        })
 })
 
 //UPDATE - with info from EDIT
@@ -41,11 +46,16 @@ breads.put(`/:id`, (req, res) => {
     } else {
         req.body.hasGluten = 'false'
     }
-    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators : true })
         .then(updatedBread => {
             console.log(updatedBread)
             res.redirect(`/breads/${req.params.id}`)
         })
+        .catch(err => {
+            res.status(303).send(
+                `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
+            )
+        }) 
 })
 
 //EDIT
@@ -81,12 +91,15 @@ breads.delete(`/:id`, (req, res) => {
         })
 })
 
-//BONUS ROUTE
-breads.get(`/data/seed/`,(req,res) =>{
+//BONUS ROUTES
+//creates seed data for testing
+breads.get(`/data/seed/`, (req, res) => {
     Bread.insertMany(seeds)
-    .then(createdBreads => {
-        res.redirect(`/breads`)
-    })
+        .then(createdBreads => {
+            res.redirect(`/breads`)
+        })
 })
+//updates all documents at once with new field
+
 
 module.exports = breads

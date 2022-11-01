@@ -22,6 +22,15 @@ function New() {
                     placeholder="http://"
                     required
                 />
+                <label htmlFor="baker">Baker</label>
+                <select name='baker' id='baker'>
+                    <option value="Christopher">Christopher</option>
+                    <option value="David">David</option>
+                    <option value="Matt">Matt</option>
+                    <option value="Peter">Peter</option>
+                    <option value="Jodie">Jodie</option>
+                    <option value="Ncuti">Ncuti</option>
+                </select>
                 <label htmlFor="hasGluten">Has Gluten?</label>
                 <input
                     type="checkbox"
@@ -30,7 +39,7 @@ function New() {
                     defaultChecked
                 />
                 <br />
-                <input type="submit"/>
+                <input type="submit" />
             </form>
             <div className='backButton'>
                 <a href="/breads"><button>Go back to the index</button></a>
