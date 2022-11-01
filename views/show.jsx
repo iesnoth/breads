@@ -1,8 +1,31 @@
 const React = require(`react`)
 const Default = require(`./layouts/default`)
 
-function Show({bread}) {
-    console.log(bread.name)
+// let placesFormatted = data.places.map((place) => {
+//     return (
+//       <div className='col-sm-6'>
+//         <h2>
+//           <a href={`/places/${place.id}`}>{place.name}</a>
+//         </h2>
+//         <p className='text-center'>
+//           {place.cuisines}
+//         </p>
+//         <img src={place.pic} alt={place.name} />
+//         <p className='text-center'>
+//           Located in {place.city}, {place.state}
+//         </p>
+//       </div>
+//     )
+
+function Show({ bread }) {
+    //call whatever I got from the static AHHH i don't know the term
+    //to be able to list the baker's other accomplishments
+    // let bakersList = bread.listBreadByBaker(bread.baker)
+    //     .then(breadsByBaker => {
+    //         return (
+    //             <li>{breadsByBaker}</li>
+    //         )
+    //     })
     return (
         <Default>
             <h2>Show Page</h2>
@@ -11,17 +34,18 @@ function Show({bread}) {
                 and it
                 {
                     bread.hasGluten
-                    ? <span> does </span>
-                    : <span> does NOT </span>
+                        ? <span> does </span>
+                        : <span> does NOT </span>
                 }
                 have gluten.
             </p>
-            <img src={bread.image} alt={bread.name}/>
-            <p>Baked by {bread.baker}</p>
+            <img src={bread.image} alt={bread.name} />
+            <p>{bread.getBakedBy()}</p>
+            {/* <ul>{bakersList}</ul> */}
             <a href="/breads"><button>To Home</button></a>
             <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
             <form action={`/breads/${bread.id}?_method=DELETE`} method="POST" >
-                <input type='submit' value="DELETE"/>
+                <input type='submit' value="DELETE" />
             </form>
         </Default>
     )

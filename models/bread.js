@@ -11,6 +11,17 @@ const breadSchema = new Schema({
     enum: ['Christopher','David','Matt','Peter','Jodie','Ncuti']
   }
 })
+
+//Adds the baker to the bottom
+breadSchema.methods.getBakedBy = function(){
+  return `${this.name} was baked with love by ${this.baker}`
+}
+
+//BONUS get all the breads made by a certain baker
+breadSchema.statics.listBreadByBaker = function(bakerName){
+  return this.find({baker : bakerName})
+}
+
 //making a model and export
 const Bread = mongoose.model('Bread',breadSchema)
 module.exports =  Bread

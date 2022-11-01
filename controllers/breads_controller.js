@@ -46,7 +46,7 @@ breads.put(`/:id`, (req, res) => {
     } else {
         req.body.hasGluten = 'false'
     }
-    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators : true })
+    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
         .then(updatedBread => {
             console.log(updatedBread)
             res.redirect(`/breads/${req.params.id}`)
@@ -55,7 +55,7 @@ breads.put(`/:id`, (req, res) => {
             res.status(303).send(
                 `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
             )
-        }) 
+        })
 })
 
 //EDIT
@@ -73,11 +73,17 @@ breads.get(`/:id/edit`, (req, res) => {
 breads.get(`/:id`, (req, res) => {
     Bread.findById(req.params.id)
         .then(foundBread => {
-            res.render('show', {
-                bread: foundBread
-            })
+            Bread.listBreadByBaker(foundBread.baker)
+                .then(breadsByBaker => {
+                    // console.log(breadsByBaker)
+                    res.render('show', {
+                        bread: foundBread,
+                        breadsbyBaker: breadsByBaker
+                    })
+                })
         })
         .catch(err => {
+            console.log(err)
             res.status(404).render('page404')
         })
 })
@@ -99,7 +105,10 @@ breads.get(`/data/seed/`, (req, res) => {
             res.redirect(`/breads`)
         })
 })
-//updates all documents at once with new field
 
+//show an index of only one baker's bread
+// breads.get(`/:baker`,(req,res) => {
+//     Bread.listBreadByBaker()
+// })
 
 module.exports = breads
