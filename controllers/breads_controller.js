@@ -75,10 +75,11 @@ breads.get(`/:id`, (req, res) => {
         .then(foundBread => {
             Bread.listBreadByBaker(foundBread.baker)
                 .then(breadsByBaker => {
-                    // console.log(breadsByBaker)
+                    //breadsByBaker is now an array
+                    //console.log(breadsByBaker)
                     res.render('show', {
                         bread: foundBread,
-                        breadsbyBaker: breadsByBaker
+                        bakersBreads: breadsByBaker
                     })
                 })
         })

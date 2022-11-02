@@ -17,15 +17,14 @@ const Default = require(`./layouts/default`)
 //       </div>
 //     )
 
-function Show({ bread }) {
+function Show({ bread,bakersBreads }) {
     //call whatever I got from the static AHHH i don't know the term
     //to be able to list the baker's other accomplishments
-    // let bakersList = bread.listBreadByBaker(bread.baker)
-    //     .then(breadsByBaker => {
-    //         return (
-    //             <li>{breadsByBaker}</li>
-    //         )
-    //     })
+    let bakersList = bakersBreads.map((bread) => {
+            return (
+                <li>{bread.name}</li>
+            )
+        })
     return (
         <Default>
             <h2>Show Page</h2>
@@ -41,7 +40,10 @@ function Show({ bread }) {
             </p>
             <img src={bread.image} alt={bread.name} />
             <p>{bread.getBakedBy()}</p>
-            {/* <ul>{bakersList}</ul> */}
+            <div>
+            <h4>Other Breads by this Baker:</h4> 
+            <ul>{bakersList}</ul> 
+            </div>
             <a href="/breads"><button>To Home</button></a>
             <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
             <form action={`/breads/${bread.id}?_method=DELETE`} method="POST" >
