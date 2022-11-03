@@ -14,7 +14,8 @@ const breadSchema = new Schema({
 
 //Adds the baker to the bottom
 breadSchema.methods.getBakedBy = function(){
-  return `${this.name} was baked with love by ${this.baker}`
+  return `${this.name} was baked with love by ${this.baker.name},
+  who has been with us since ${this.baker.startDate.getFullYear()}.`
 }
 
 //BONUS get all the breads made by a certain baker

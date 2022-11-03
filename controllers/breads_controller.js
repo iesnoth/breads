@@ -67,23 +67,25 @@ breads.put(`/:id`, (req, res) => {
 
 //EDIT
 breads.get(`/:id/edit`, (req, res) => {
-    Bread.findById(req.params.id)
+    Baker.find()
+    .then(foundBakers =>{
+        Bread.findById(req.params.id)
         .then(foundBread => {
             res.render(`edit`, {
-                bread: foundBread
+                bread: foundBread,
+                bakers: foundBakers
             })
         })
-
+    })
 })
 
 //SHOW
 breads.get(`/:id`, (req, res) => {
     Bread.findById(req.params.id)
+        .populate(`baker`)
         .then(foundBread => {
             Bread.listBreadByBaker(foundBread.baker)
                 .then(breadsByBaker => {
-                    //breadsByBaker is now an array
-                    //console.log(breadsByBaker)
                     res.render('show', {
                         bread: foundBread,
                         bakersBreads: breadsByBaker
