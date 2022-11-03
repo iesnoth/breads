@@ -1,25 +1,7 @@
 const React = require(`react`)
 const Default = require(`./layouts/default`)
 
-// let placesFormatted = data.places.map((place) => {
-//     return (
-//       <div className='col-sm-6'>
-//         <h2>
-//           <a href={`/places/${place.id}`}>{place.name}</a>
-//         </h2>
-//         <p className='text-center'>
-//           {place.cuisines}
-//         </p>
-//         <img src={place.pic} alt={place.name} />
-//         <p className='text-center'>
-//           Located in {place.city}, {place.state}
-//         </p>
-//       </div>
-//     )
-
 function Show({ bread,bakersBreads }) {
-    //call whatever I got from the static AHHH i don't know the term
-    //to be able to list the baker's other accomplishments
     let bakersList = bakersBreads.map((bread) => {
             return (
                 <li>{bread.name}</li>

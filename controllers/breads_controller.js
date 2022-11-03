@@ -6,13 +6,18 @@ const seeds = require('../models/seed.js')
 
 //INDEX
 breads.get(`/`, (req, res) => {
-    Bread.find()
-        .then(foundBreads => {
-            res.render('index', {
-                breads: foundBreads,
-                title: 'Index Page'
-            })
+    Baker.find()
+        .then(foundBakers => {
+            Bread.find()
+                .then(foundBreads => {
+                    res.render('index', {
+                        breads: foundBreads,
+                        bakers: foundBakers,
+                        title: 'Index Page'
+                    })
+                })
         })
+
 })
 
 //NEW: getting the info
@@ -68,15 +73,15 @@ breads.put(`/:id`, (req, res) => {
 //EDIT
 breads.get(`/:id/edit`, (req, res) => {
     Baker.find()
-    .then(foundBakers =>{
-        Bread.findById(req.params.id)
-        .then(foundBread => {
-            res.render(`edit`, {
-                bread: foundBread,
-                bakers: foundBakers
-            })
+        .then(foundBakers => {
+            Bread.findById(req.params.id)
+                .then(foundBread => {
+                    res.render(`edit`, {
+                        bread: foundBread,
+                        bakers: foundBakers
+                    })
+                })
         })
-    })
 })
 
 //SHOW
