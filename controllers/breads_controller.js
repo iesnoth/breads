@@ -8,7 +8,6 @@ const seeds = require('../models/seed.js')
 breads.get(`/`, async (req, res) => {
     const foundBakers = await Baker.find()
     const foundBreads = await Bread.find()
-    console.log(foundBreads)
     res.render('index', {
         breads: foundBreads,
         bakers: foundBakers,
@@ -17,18 +16,15 @@ breads.get(`/`, async (req, res) => {
 })
 
 //NEW: getting the info
-breads.get(`/new`, (req, res) => {
-    Baker.find()
-        .then(foundBakers => {
-            res.render(`new`, {
-                bakers: foundBakers
-            })
-        })
-
+breads.get(`/new`, async (req, res) => {
+    const foundBakers = await Baker.find()
+    res.render(`new`, {
+        bakers: foundBakers
+    })
 })
 
 //CREATE: posting the got info
-breads.post(`/`, (req, res) => {
+breads.post(`/`, async (req, res) => {
     console.log(req.body)
     if (!req.body.image) {
         req.body.image = 'undefined'
@@ -38,83 +34,77 @@ breads.post(`/`, (req, res) => {
     } else {
         req.body.hasGluten = 'false'
     }
-    Bread.create(req.body)
-        .then(createdBread => { res.redirect('/breads') })
-        .catch(err => {
-            res.status(303).send(
-                `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
-            )
-        })
+    const createdBead = await Bread.create(req.body)
+    try {
+        res.redirect('/breads')
+    }
+    catch (err) {
+        res.status(303).send(
+            `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
+        )
+    }
 })
 
 //UPDATE - with info from EDIT
-breads.put(`/:id`, (req, res) => {
+breads.put(`/:id`, async (req, res) => {
     if (req.body.hasGluten === 'on') {
         req.body.hasGluten = 'true'
     } else {
         req.body.hasGluten = 'false'
     }
-    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-        .then(updatedBread => {
-            console.log(updatedBread)
-            res.redirect(`/breads/${req.params.id}`)
-        })
-        .catch(err => {
-            res.status(303).send(
-                `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
-            )
-        })
+    const updatedBread = await Bread.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    try {
+        console.log(updatedBread)
+        res.redirect(`/breads/${req.params.id}`)
+    }
+    catch (err) {
+        res.status(303).send(
+            `I'm sorry, some of your information was invalid. Please read the instructions thoroughly and try again.`
+        )
+    }
 })
 
 //EDIT
-breads.get(`/:id/edit`, (req, res) => {
-    Baker.find()
-        .then(foundBakers => {
-            Bread.findById(req.params.id)
-                .then(foundBread => {
-                    res.render(`edit`, {
-                        bread: foundBread,
-                        bakers: foundBakers
-                    })
-                })
-        })
+breads.get(`/:id/edit`, async (req, res) => {
+    const foundBakers = await Baker.find()
+    const foundBread = await Bread.findById(req.params.id)
+    res.render(`edit`, {
+        bread: foundBread,
+        bakers: foundBakers
+    })
 })
 
 //SHOW
-breads.get(`/:id`, (req, res) => {
-    Bread.findById(req.params.id)
+breads.get(`/:id`, async (req, res) => {
+    const foundBread = await Bread.findById(req.params.id)
         .populate(`baker`)
-        .then(foundBread => {
-            Bread.listBreadByBaker(foundBread.baker)
-                .then(breadsByBaker => {
-                    res.render('show', {
-                        bread: foundBread,
-                        bakersBreads: breadsByBaker
-                    })
-                })
+
+    const breadsByBaker = await Bread.listBreadByBaker(foundBread.baker)
+    try {
+        res.render('show', {
+            bread: foundBread,
+            bakersBreads: breadsByBaker
         })
-        .catch(err => {
-            console.log(err)
-            res.status(404).render('page404')
-        })
+    }
+    catch (err) {
+        console.log(err)
+        res.status(404).render('page404')
+    }
 })
 
+
 //DELETE breads
-breads.delete(`/:id`, (req, res) => {
-    Bread.findByIdAndDelete(req.params.id)
-        .then(deletedBread => {
-            console.log(deletedBread)
-            res.status(303).redirect(`/breads`)
-        })
+breads.delete(`/:id`, async (req, res) => {
+    const deletedBread = await Bread.findByIdAndDelete(req.params.id)
+    console.log(deletedBread)
+    res.status(303).redirect(`/breads`)
 })
 
 //BONUS ROUTES
 //creates seed data for testing
-breads.get(`/data/seed/`, (req, res) => {
-    Bread.insertMany(seeds)
-        .then(createdBreads => {
-            res.redirect(`/breads`)
-        })
+breads.get(`/data/seed/`, async (req, res) => {
+    const createdBreads = await Bread.insertMany(seeds)
+    res.redirect(`/breads`)
 })
 
 //show an index of only one baker's bread
