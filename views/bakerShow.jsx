@@ -18,6 +18,9 @@ function Show({ baker }) {
                 }
             </ul>
             <a href="/breads"><button>To Home</button></a>
+            <form action={`/bakers/${baker.id}?_method=DELETE`} method="POST">
+                <input type="submit" value="delete">
+                </input></form>
         </Default>
     )
 }

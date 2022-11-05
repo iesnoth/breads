@@ -103,7 +103,7 @@ breads.get(`/:id`, (req, res) => {
         })
 })
 
-//DELETE
+//DELETE breads
 breads.delete(`/:id`, (req, res) => {
     Bread.findByIdAndDelete(req.params.id)
         .then(deletedBread => {
